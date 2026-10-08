@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow">
+<title>Nashville Salon Sites</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a scouting board. Summary + "waiting on you" up top, filters, site cards grouped by status, ruled-out table, change log. */
+:root{
+  --bg:#f3f4f2; --surface:#ffffff; --ink:#1b2422; --muted:#5d6966; --line:#d9dedb;
+  --accent:#8a2d4b; --accent-soft:#f4e6eb;
+  --good:#2f6b4a; --good-soft:#e3efe7; --warn:#8a5a12; --warn-soft:#f6ecd9; --bad:#9b2f2f; --bad-soft:#f5e1e1;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Helvetica Neue", Arial, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#141a19; --surface:#1c2422; --ink:#e7ecea; --muted:#9aa7a3; --line:#2f3a37;
+  --accent:#e08aa6; --accent-soft:#3a2430;
+  --good:#7cc79c; --good-soft:#1f3328; --warn:#e2b56a; --warn-soft:#3a2f1c; --bad:#ec8f8f; --bad-soft:#3d2323; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#141a19; --surface:#1c2422; --ink:#e7ecea; --muted:#9aa7a3; --line:#2f3a37;
+  --accent:#e08aa6; --accent-soft:#3a2430;
+  --good:#7cc79c; --good-soft:#1f3328; --warn:#e2b56a; --warn-soft:#3a2f1c; --bad:#ec8f8f; --bad-soft:#3d2323; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.5 var(--f-body);margin:0}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:clamp(16px,3vw,32px);padding-block:28px 64px;display:grid;gap:28px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4.4vw,42px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:21px;font-weight:700}
+h3{font-size:17px;font-weight:700}
+a{color:var(--accent)}
+.eyebrow{font:500 11px/1.2 var(--f-mono);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+header{display:grid;gap:8px}
+header p{margin:0;color:var(--muted);max-width:68ch}
+.stamp{font:12px var(--f-mono);color:var(--muted)}
+.counts{display:flex;flex-wrap:wrap;gap:10px}
+.count{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 14px;min-width:120px;display:grid;gap:2px}
+.count b{font:700 26px/1 var(--f-display);font-variant-numeric:tabular-nums}
+.count span{font-size:12px;color:var(--muted)}
+.waiting{background:var(--accent-soft);border-radius:12px;padding:16px 18px;display:grid;gap:8px}
+.waiting ul,.next ul{margin:0;padding-left:18px;display:grid;gap:4px}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px}
+.next{border:1px solid var(--line);border-radius:12px;padding:16px 18px;display:grid;gap:8px;background:var(--surface)}
+.controls{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.chip{font:500 13px var(--f-body);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:6px 12px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.chip:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+#q{font:14px var(--f-body);padding:7px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);min-width:0;flex:1 1 200px;max-width:320px}
+section{display:grid;gap:14px}
+.sechead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.sechead small{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:16px;display:grid;gap:10px;align-content:start;min-width:0}
+.card.pick{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent) inset}
+.cardtop{display:flex;justify-content:space-between;gap:10px;align-items:start}
+.cardtop>div{min-width:0}
+.addr{color:var(--muted);font-size:13px}
+.pill{font:500 11px/1 var(--f-mono);letter-spacing:.06em;text-transform:uppercase;padding:5px 8px;border-radius:999px;white-space:nowrap}
+.p-pick{background:var(--accent);color:var(--surface)}
+.p-top{background:var(--good-soft);color:var(--good)}
+.p-candidate{background:var(--bg);color:var(--muted);border:1px solid var(--line)}
+.p-watch{background:var(--warn-soft);color:var(--warn)}
+.p-out{background:var(--bad-soft);color:var(--bad)}
+dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;font-size:13.5px}
+dt{color:var(--muted);font:500 11.5px/1.7 var(--f-mono);text-transform:uppercase;letter-spacing:.05em}
+dd{margin:0;min-width:0;overflow-wrap:anywhere;font-variant-numeric:tabular-nums}
+.flag{background:var(--warn-soft);color:var(--ink);border-radius:8px;padding:8px 10px;font-size:13px}
+.why{font-size:13.5px;margin:0}
+.links{display:flex;flex-wrap:wrap;gap:12px;font-size:13px}
+.copy{font:12px var(--f-mono);border:1px solid var(--line);background:transparent;color:var(--muted);border-radius:6px;padding:2px 6px;cursor:pointer}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:560px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+tr:last-child td{border-bottom:0}
+details>summary{cursor:pointer;font:700 17px var(--f-display);list-style:none}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+ ";color:var(--accent)}
+details[open]>summary::before{content:"– "}
+.log{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.log li{display:grid;grid-template-columns:150px 1fr;gap:12px;font-size:14px}
+.log time{font:12px var(--f-mono);color:var(--muted);padding-top:2px}
+.empty{border:1px dashed var(--line);border-radius:12px;padding:24px;color:var(--muted);text-align:center}
+.legend{font-size:12.5px;color:var(--muted)}
+@media (max-width:520px){.log li{grid-template-columns:1fr;gap:2px}}
+@media (prefers-reduced-motion:no-preference){.card{transition:border-color .15s}}
+</style>
+
+<style>
+[hidden]{display:none!important}
+body{margin:0}
+.gate{max-width:420px;margin:12vh auto 0;padding-inline:16px;display:grid;gap:12px}
+.gate input{font:16px var(--f-body);padding:12px 14px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--ink)}
+.gate button{font:600 15px var(--f-body);padding:12px 14px;border:0;border-radius:10px;background:var(--ink);color:var(--bg);cursor:pointer}
+.gate .err{color:var(--bad);font-size:14px;min-height:1.2em}
+.lock{font:12px var(--f-mono);color:var(--muted);background:none;border:0;cursor:pointer;padding:0;text-decoration:underline}
+</style>
+</head><body>
+
+<form class="gate" id="gate">
+  <div class="eyebrow">New salon location search</div>
+  <h1 style="font-size:30px">Nashville Salon Sites</h1>
+  <p style="margin:0;color:var(--muted)">Enter the passcode Flash sent you on Discord.</p>
+  <label for="pass" class="eyebrow">Passcode</label>
+  <input id="pass" type="password" autocomplete="current-password" required>
+  <button type="submit">Open board</button>
+  <div class="err" id="gateErr" role="alert"></div>
+</form>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">New salon location search · Nashville metro</div>
+    <h1>Nashville Salon Sites</h1>
+    <p>Every space Flash has checked for the next nail salon: your picks, the best new projects, and everything ruled out with the reason. New findings land here as they come in.</p>
+    <div class="stamp" id="stamp">Loading the latest findings…</div>
+    <div><button class="lock" id="lockBtn" type="button">Lock this device</button></div>
+  </header>
+
+  <div class="counts" id="counts" aria-live="polite"></div>
+
+  <div class="two">
+    <div class="waiting" id="waitingBox" hidden>
+      <h2>Waiting on you</h2>
+      <ul id="waiting"></ul>
+    </div>
+    <div class="next" id="nextBox" hidden>
+      <h2>What Flash does next</h2>
+      <ul id="next"></ul>
+    </div>
+  </div>
+
+  <div class="controls" role="toolbar" aria-label="Filter sites">
+    <input id="q" type="search" placeholder="Search address, tenant, broker…" aria-label="Search sites">
+    <div id="areaChips" class="controls"></div>
+  </div>
+  <div class="legend">Rent is asking $ per sq ft per year unless noted. "Nail salon" = nearest one we found, and whether any is in the same center. Distances are straight-line miles.</div>
+
+  <div id="groups"></div>
+
+  <details id="outWrap">
+    <summary>Ruled out <span id="outCount"></span></summary>
+    <div class="tablewrap" style="margin-top:12px">
+      <table>
+        <thead><tr><th>Place</th><th>Area</th><th>Why it's out</th></tr></thead>
+        <tbody id="outRows"></tbody>
+      </table>
+    </div>
+  </details>
+
+  <section>
+    <h2>Change log</h2>
+    <ul class="log" id="log"></ul>
+  </section>
+</div>
+
+
+<script>
+
+const STATUS = {
+  pick:{label:"Your pick", pill:"p-pick", title:"Your picks", note:"The places you asked to look into."},
+  top:{label:"Top find", pill:"p-top", title:"Top finds", note:"Best new options Flash found."},
+  candidate:{label:"Candidate", pill:"p-candidate", title:"Other candidates", note:"Passed every check; less strong."},
+  watch:{label:"Watch", pill:"p-watch", title:"Watch list", note:"Not ready yet or needs a check first."}
+};
+const ORDER = ["pick","top","candidate","watch"];
+let sites = [], meta = null, log = [], area = "All", query = "";
+
+const el = (tag, cls, text) => { const n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; };
+const safeUrl = u => (typeof u === "string" && /^https:\/\//.test(u)) ? u : null;
+
+function fmtWhen(iso){
+  if (!iso) return "";
+  const d = new Date(iso); if (isNaN(d)) return iso;
+  return d.toLocaleString("en-US",{timeZone:"America/Chicago",month:"short",day:"numeric",hour:"numeric",minute:"2-digit"}) + " CT";
+}
+
+function card(s){
+  const c = el("article","card" + (s.status==="pick" ? " pick" : ""));
+  const top = el("div","cardtop");
+  const t = el("div");
+  t.append(el("h3",null,s.name || s.address || "Unnamed site"));
+  if (s.address && s.address !== s.name) t.append(el("div","addr",s.address));
+  const st = STATUS[s.status] || STATUS.candidate;
+  top.append(t, el("span","pill " + st.pill, st.label));
+  c.append(top);
+  const dl = el("dl");
+  [["Area",s.area],["Size",s.size],["Rent",s.rent],["Opens",s.opens],["Anchor",s.anchor],["Neighbors",s.neighbors],["Nail salon",s.nail],["To your store",s.distanceStore],["Area income",s.income],["Broker",s.broker]]
+    .forEach(([k,v]) => { if (v) { dl.append(el("dt",null,k), el("dd",null,v)); } });
+  c.append(dl);
+  if (s.why) c.append(el("p","why",s.why));
+  if (s.risk) c.append(el("div","flag","⚠ " + s.risk));
+  const links = el("div","links");
+  const u = safeUrl(s.link);
+  if (u) { const a = el("a",null,"Listing ↗"); a.href = u; a.target = "_blank"; a.rel = "noopener"; links.append(a); }
+  const u2 = safeUrl(s.link2);
+  if (u2) { const a = el("a",null,"More ↗"); a.href = u2; a.target = "_blank"; a.rel = "noopener"; links.append(a); }
+  if (s.checked) links.append(el("span","stamp","Checked " + s.checked));
+  c.append(links);
+  return c;
+}
+
+function matches(s){
+  if (area !== "All" && s.area !== area) return false;
+  if (!query) return true;
+  const hay = Object.values(s).filter(v => typeof v === "string").join(" ").toLowerCase();
+  return hay.includes(query);
+}
+
+function render(){
+  const live = sites.filter(s => s.status !== "out");
+  const out = sites.filter(s => s.status === "out");
+  // counts
+  const counts = document.getElementById("counts"); counts.replaceChildren();
+  [["pick","Your picks"],["top","Top finds"],["candidate","Candidates"],["watch","Watch list"],["out","Ruled out"]].forEach(([k,label]) => {
+    const n = sites.filter(s => s.status === k).length;
+    const box = el("div","count"); box.append(el("b",null,String(n)), el("span",null,label)); counts.append(box);
+  });
+  // area chips
+  const areas = ["All", ...Array.from(new Set(sites.map(s => s.area).filter(Boolean))).sort()];
+  if (!areas.includes(area)) area = "All";
+  const chips = document.getElementById("areaChips"); chips.replaceChildren();
+  areas.forEach(a => { const b = el("button","chip",a); b.type="button"; b.setAttribute("aria-pressed", String(a===area)); b.onclick = () => { area = a; render(); }; chips.append(b); });
+  // groups
+  const groups = document.getElementById("groups"); groups.replaceChildren();
+  let shown = 0;
+  ORDER.forEach(k => {
+    const list = live.filter(s => s.status === k && matches(s)).sort((a,b) => (a.rank ?? 99) - (b.rank ?? 99));
+    if (!list.length) return;
+    shown += list.length;
+    const sec = el("section"); sec.style.marginBottom = "24px";
+    const h = el("div","sechead"); h.append(el("h2",null,STATUS[k].title), el("small",null,STATUS[k].note));
+    const g = el("div","grid"); list.forEach(s => g.append(card(s)));
+    sec.append(h,g); groups.append(sec);
+  });
+  if (!shown) groups.append(el("div","empty", sites.length ? "No sites match this filter." : "No findings loaded yet. Flash adds each checked site here; they appear as soon as they're saved."));
+  // out table
+  const rows = document.getElementById("outRows"); rows.replaceChildren();
+  const outF = out.filter(matches).sort((a,b) => (a.area||"").localeCompare(b.area||""));
+  outF.forEach(s => {
+    const tr = el("tr");
+    const td1 = el("td"); const u = safeUrl(s.link);
+    if (u) { const a = el("a",null,s.name || s.address); a.href=u; a.target="_blank"; a.rel="noopener"; td1.append(a); } else td1.textContent = s.name || s.address;
+    tr.append(td1, el("td",null,s.area || ""), el("td",null,s.outReason || ""));
+    rows.append(tr);
+  });
+  document.getElementById("outCount").textContent = "(" + outF.length + ")";
+  // meta
+  if (meta) {
+    document.getElementById("stamp").textContent = "Last updated " + fmtWhen(meta.updatedAt) + (meta.headline ? " · " + meta.headline : "");
+    const fill = (id, boxId, arr) => { const ul = document.getElementById(id); ul.replaceChildren(); (arr||[]).forEach(t => ul.append(el("li",null,t))); document.getElementById(boxId).hidden = !(arr && arr.length); };
+    fill("waiting","waitingBox",meta.waitingOnSean); fill("next","nextBox",meta.nextSteps);
+  }
+  // log
+  const lg = document.getElementById("log"); lg.replaceChildren();
+  log.slice().sort((a,b) => (b.at||"").localeCompare(a.at||"")).forEach(e => {
+    const li = el("li"); const tm = el("time",null,fmtWhen(e.at)); li.append(tm, el("span",null,e.text||"")); lg.append(li);
+  });
+  if (!log.length) lg.append(el("li","stamp","No updates yet."));
+}
+
+document.getElementById("q").addEventListener("input", e => { query = e.target.value.trim().toLowerCase(); render(); });
+
+
+
+const KEY_STORE="salonBoardKey";
+let cryptoKey=null, lastStamp=null;
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function deriveKey(pass,salt,iter){
+  const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pass),"PBKDF2",false,["deriveKey"]);
+  return crypto.subtle.deriveKey({name:"PBKDF2",salt,iterations:iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},true,["decrypt"]);
+}
+async function fetchEnc(){ const r=await fetch("data.enc.json?t="+Date.now(),{cache:"no-store"}); if(!r.ok) throw new Error("fetch "+r.status); return r.json(); }
+async function decryptWith(key,enc){
+  const pt=await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(enc.iv)},key,b64(enc.ct));
+  return JSON.parse(new TextDecoder().decode(pt));
+}
+function apply(data){
+  sites=data.sites||[]; meta=data.meta||null; log=data.log||[];
+  document.getElementById("gate").hidden=true; document.querySelector(".wrap").hidden=false; render();
+}
+async function refresh(){
+  try{
+    const enc=await fetchEnc();
+    if(enc.stamp===lastStamp) return;
+    apply(await decryptWith(cryptoKey,enc)); lastStamp=enc.stamp;
+  }catch(e){ document.getElementById("stamp").textContent="Couldn't refresh. Reload the page to try again."; }
+}
+async function unlockStored(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(KEY_STORE)||"null"); if(!saved) return false;
+    const enc=await fetchEnc(); if(saved.salt!==enc.salt) return false;
+    const key=await crypto.subtle.importKey("raw",b64(saved.k),{name:"AES-GCM"},true,["decrypt"]);
+    apply(await decryptWith(key,enc)); cryptoKey=key; lastStamp=enc.stamp; return true;
+  }catch(e){ return false; }
+}
+document.getElementById("gate").addEventListener("submit",async ev=>{
+  ev.preventDefault(); const err=document.getElementById("gateErr"); err.textContent="Opening…";
+  try{
+    const enc=await fetchEnc();
+    const key=await deriveKey(document.getElementById("pass").value.trim(),b64(enc.salt),enc.iter);
+    const data=await decryptWith(key,enc);
+    cryptoKey=key; lastStamp=enc.stamp; apply(data); err.textContent="";
+    try{ const raw=new Uint8Array(await crypto.subtle.exportKey("raw",key)); localStorage.setItem(KEY_STORE,JSON.stringify({salt:enc.salt,k:btoa(String.fromCharCode(...raw))})); }catch(e){}
+  }catch(e){ err.textContent="That passcode didn't work. Check the one Flash sent you."; }
+});
+document.getElementById("lockBtn").addEventListener("click",()=>{ try{localStorage.removeItem(KEY_STORE);}catch(e){} location.reload(); });
+document.querySelector(".wrap").hidden=true;
+unlockStored();
+setInterval(()=>{ if(cryptoKey) refresh(); },60000);
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden && cryptoKey) refresh(); });
+
+</script>
+</body></html>
